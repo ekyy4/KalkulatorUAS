@@ -19,10 +19,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<ItemList> mExampleList;
-    private RecyclerView mRecyclerView;
-    private SharedPreferenceAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    ArrayList<ItemList> ExampleList;
+    private RecyclerView RecyclerView;
+    private SharedPreferenceAdapter Adapter;
+    private RecyclerView.LayoutManager LayoutManager;
     RadioGroup operasiGroup;
     RadioButton tambah, kurang, kali, bagi;
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(mExampleList);
+        String json = gson.toJson(ExampleList);
         editor.putString("task list", json);
         editor.apply();
     }
@@ -64,21 +64,21 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = sharedPreferences.getString("task list", null);
         Type type = new TypeToken<ArrayList<ItemList>>() {}.getType();
-        mExampleList = gson.fromJson(json, type);
+        ExampleList = gson.fromJson(json, type);
 
-        if (mExampleList == null) {
-            mExampleList = new ArrayList<>();
+        if (ExampleList == null) {
+            ExampleList = new ArrayList<>();
         }
     }
 
     private void buildRecyclerView() {
-        mRecyclerView = findViewById(R.id.recyclerview);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new SharedPreferenceAdapter(mExampleList);
+        RecyclerView = findViewById(R.id.recyclerview);
+        RecyclerView.setHasFixedSize(true);
+        LayoutManager = new LinearLayoutManager(this);
+        Adapter = new SharedPreferenceAdapter(ExampleList);
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        RecyclerView.setLayoutManager(LayoutManager);
+        RecyclerView.setAdapter(Adapter);
     }
 
     private void setInsertButton() {
@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
             operasi = ":";
         }
 
-        mExampleList.add(new ItemList(line1, operasi, line2, String.valueOf(hasil)));
-        mAdapter.notifyItemInserted(mExampleList.size());
+        ExampleList.add(new ItemList(line1, operasi, line2, String.valueOf(hasil)));
+        Adapter.notifyItemInserted(ExampleList.size());
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-        mExampleList.clear();
-        mAdapter.notifyDataSetChanged();
+        ExampleList.clear();
+        Adapter.notifyDataSetChanged();
     }
 
 }
